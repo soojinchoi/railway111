@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qboard">
+
+	<insert id="insert" parameterType="QboardVo">
+		<selectKey keyProperty="no" resultType="long" order="BEFORE">
+			select qaboard_no_seq.nextval from dual
+		</selectKey>
+		<![CDATA[
+		insert
+			into qaboard (QABOARD_NO, QABOARD_TITLE, QABOARD_CONTENT, CREATED_DATE, MEMBER_NO )
+				values (qaboard_no_seq.nextval, #{title, jdbcType=VARCHAR }, #{content, jdbcType=VARCHAR }, sysdate, 5)
+				]]>
+	</insert>
+	
+	
+	<select id="list" resultType="QboardVo">
+		<![CDATA[
+		SELECT  A.qaboard_no as qboardno, 
+			    A.qaboard_title as title, 
+				A.qaboard_content as content, 
+				A.view_cnt as viewcnt, 
+				to_char( A.created_date, 'yyyy-mm-dd hh:mi:ss' ) as createdDate, 
+				A.member_no as memberno,
+				B.member_name as name		  
+		FROM 	qaboard A, member B
+		WHERE 	A.member_no = B.member_no
+
+		]]>
+	</select>
+
+	<select parameterType="QboardVo" id="view" resultType="QboardVo">
+	<![CDATA[ select qaboard_no as qboardno, qaboard_title as title, qaboard_content as content,
+	to_char( created_date,'yyyy-mm-dd hh:mi:ss' ) as createdDate from qaboard where qaboard_no=#{qboardno } ]]>
+	</select>
+
+	<select id="getByNo" resultType="QboardVo" parameterType="long">
+		<![CDATA[
+		select  A.qaboard_no as qboardno, 
+			    A.qaboard_title as title, 
+				A.qaboard_content as content, 
+				A.view_cnt as viewcnt, 
+				to_char( A.created_date, 'yyyy-mm-dd hh:mi:ss' ) as createdDate, 
+				A.member_no as memberno,
+				B.member_name as name		  
+		FROM 	qaboard A, member B
+		WHERE 	A.member_no = B.member_no and A.qaboard_no = #{qboardno}
+		
+		]]>
+	</select>
+		
+	
+	<update id="update" parameterType="QboardVo">
+		<![CDATA[
+		update qaboard
+		   set qaboard_title = #{title}, qaboard_content = #{content }
+         where qaboard_no = #{qboardno}
+		]]>			
+	</update>
+	
+	<delete id="delete" parameterType="QboardVo">
+		<![CDATA[
+		delete
+		  from qaboard
+		where qaboard_no = #{qboardno}	
+		]]>
+	</delete>
+	
+	<!--\total-->
+	
+</mapper>

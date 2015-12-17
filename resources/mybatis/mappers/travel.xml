@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="travel">
+
+	<select id="list" resultType="MyTravelTimeVo">
+	<![CDATA[ 
+		select
+		id,
+		title,
+		date_start as "start",
+		date_end as end,
+		allday as allDay,
+		travel_no as travelNo,
+		year, month,
+		dated as "date", day
+		FROM MYTRAVEL_TIME
+		]]>
+	</select>
+	
+	<select id="listByTravelNo" resultType="MyTravelTimeVo" parameterType="MyTravelTimeVo">
+	<![CDATA[ 
+	select
+ 		  id,
+		  title,
+		  date_start as "start",
+		  date_end as end,
+		  allday as allDay,
+		  travel_no as travelNo,
+		  year, month, day,
+		  dated as "date"
+  	from  MYTRAVEL_TIME
+  	where travel_no=(select max(travel_no) from MYTRAVEL_TIME)
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="MyTravelTimeVo" >	
+	<![CDATA[ 
+	insert 
+	into 
+	MYTRAVEL_TIME 
+	VALUES(#{id }, #{title }, #{start }, #{end }, #{allDay}, TRAVEL_NO_SEQ.nextval,#{year },#{month },#{day },#{date } )
+	]]>
+	</insert>
+	
+	<select id="selectByid" resultType="MyTravelTimeVo" parameterType="long">
+	<![CDATA[ 
+		select
+		id,
+		title,
+		date_start as "start",
+		date_end as end,
+		allday as allDay,
+		travel_no as travelNo
+		from MYTRAVEL_TIME
+		where id=1
+		]]>
+	</select>
+	
+	<delete id="delete" parameterType="long">
+		<![CDATA[
+		delete
+		from MyTRAVEL_TIME
+		where travel_no=#{travelNo }
+		]]>
+	</delete>
+	
+	<update id="modify" parameterType="MyTravelTimeVo">
+		update MYTRAVEL_TIME
+		set
+		date_start=#{start },date_end=#{end } where travel_no = #{travelNo }
+	</update>
+	
+	
+</mapper>

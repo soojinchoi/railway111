@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+	<typeAlias alias="MyTravelTimeVo" type="com.dorothy.railway999.vo.MyTravelTimeVo"></typeAlias>
+	<typeAlias alias="NoticeVo" type="com.dorothy.railway999.vo.NoticeVo"></typeAlias>
+	<typeAlias alias="QboardVo" type="com.dorothy.railway999.vo.QboardVo"></typeAlias>
+	<typeAlias alias="QcommentsVo" type="com.dorothy.railway999.vo.QcommentsVo"></typeAlias>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mybatis/mappers/travel.xml" />
+		<mapper resource="mybatis/mappers/notice.xml" />
+		<mapper resource="mybatis/mappers/qboard.xml" />
+		<mapper resource="mybatis/mappers/qcomment.xml" />	
+	</mappers>
+</configuration>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="freeboard">
+
+<select id="selectList" parameterType="int" resultType="FreeboardVo">
+		<![CDATA[
+SELECT  A.freeboard_no as freeboardNo, 
+		A.freeboard_Title as freeboardTitle, 
+		A.freeboard_Content as freeboardContent, 
+		A.view_cnt as viewCnt, 
+		to_char( A.created_Date, 'yyyy-mm-dd hh:mi:ss' ) as createdDate, 
+		A.member_No as memberNo,  
+		B.member_Name as memberName	  			  
+FROM 	freeboard A, member B
+WHERE 	A.member_No = B.member_No
+
+    	]]>
+    	
+ 
+</select>
+
+
+
+	<select id="selectByNo" resultType="FreeboardVo" parameterType="long">
+		<![CDATA[
+	select  A.freeboard_no as freeboardNo, 
+			A.freeboard_Title as freeboardTitle, 
+			A.freeboard_Content as freeboardContent, 
+			A.view_cnt as viewCnt,
+			to_char( A.created_Date, 'yyyy-mm-dd hh:mi:ss' ) as createdDate, 
+			A.member_No as memberNo,  
+			B.member_Name as memberName
+	FROM 	freeboard A, member B
+	WHERE   A.MEMBER_NO = B.MEMBER_NO and A.freeboard_no = #{freeboardNo}
+		
+		]]>
+	</select>
+	
+	
+	
+ <insert id="insert" parameterType="FreeboardVo">
+		<selectKey keyProperty="freeboradNo" resultType="long" order="BEFORE">
+			select freeboard_no_seq.nextval from dual
+		</selectKey>
+		insert
+          into freeboard(freeboard_no, freeboard_title, freeboard_content,view_cnt,created_date )
+        values ( freeboard_no_seq.nextval, #{freeboardTitle }, #{freeboardContent }, #{viewCnt }, SYSDATE )
+</insert>
+
+	<delete id="delete" parameterType="map">
+		<![CDATA[
+		delete
+		  from freeboard 
+		where freeboard_no = #{freeboardNo}	
+		]]>
+	</delete>
+ 
+ 
+ 	<update id="update" parameterType="FreeboardVo">
+		<![CDAT
+		update freeboard
+		   set freeboard_title = #{freeboardTitle }, freeboard_content = #{freeboardContent }
+         where freeboard_no = #{freeboardNo }
+		]]>			
+	</update>
+ 
+	
+	<update id="ViewCount" parameterType="long">
+		<![CDATA[
+		update freeboard
+		   set view_cnt = view_cnt + 1		
+         where freeboard_no = #{freeboardNo }
+		]]>			
+	</update>
+	
+</mapper>
